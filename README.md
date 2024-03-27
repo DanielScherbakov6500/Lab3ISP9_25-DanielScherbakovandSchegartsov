@@ -1,1 +1,311 @@
-# Lab3ISP9_25-DanielScherbakovandSchegartsov
+# Lab3ISP9_25-DanielScherbakovandSchegartsov 
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Comic App',
+      home: LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatelessWidget {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Login')),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(hintText: 'Username'),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(hintText: 'Password'),
+                obscureText: true,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ComicsPage()));
+                },
+                child: Text('Login'),
+              ),
+              SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                },
+                child: Text('Register'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class RegisterPage extends StatelessWidget {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Register')),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(hintText: 'Username'),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(hintText: 'Password'),
+                obscureText: true,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ComicsPage()));
+                },
+                child: Text('Register'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ComicsPage extends StatefulWidget {
+  @override
+  _ComicsPageState createState() => _ComicsPageState();
+}
+
+class _ComicsPageState extends State<ComicsPage> {
+  List<Map<String, String>> allComicsData = [
+    {
+      'imagePath': 'https://d1466nnw0ex81e.cloudfront.net/n_iv/600/887571.jpg',
+      'title': 'Flash',
+      'description': 'Флэш обладает способностью развивать скорость, превышающую скорость света, и использовать сверхчеловеческие рефлексы, что нарушает некоторые законы физики. Здесь представлен один из комиксов DC Флэш.'
+          ' Цена: 12 долларов',
+    },
+    {
+      'imagePath': 'https://i.pinimg.com/originals/ff/a8/91/ffa8916c4887b1eb0069e8cc3a9bde8c.jpg',
+      'title': 'Batman',
+      'description': 'Бэтмен - супергерой-защитник Готэм-Сити, измученный, задумчивый линчеватель в костюме летучей мыши, который борется со злом и вселяет страх в сердца преступников повсюду. В своей публичной ипостаси он Брюс Уэйн, промышленник-миллиардер и печально известный плейбой. Хотя у него нет сверхчеловеческих способностей, он один из самых умных людей в мире и величайших бойцов. Здесь представлен один из комиксов DC Бэтмен.'
+          ' Цена: 13 долларов',
+    },
+    {
+      'imagePath': 'https://i.pinimg.com/736x/e1/32/c7/e132c7fa631ff414bcc39953164d2394.jpg',
+      'title': 'SuperMan',
+      'description': 'Также известен как «Человек из стали» — один из сильнейших супергероев во вселенной DC. Его способности включают в себя невероятную суперсилу, суперскорость, неуязвимость, ледяное дыхание, полет и тепловое зрение. Настоящее имя — Кал-Эл. Родился Кал-Эл на умирающей планете Криптон. Его родители Джор-Эл и Лара отправили его в ракете к планете Земля, где он будет последним выжившим представителем своего вида. Здесь представлен один из старых комиксов DC Супермена.'
+          ' Цена: 14 долларов',
+    },
+  ];
+
+
+  List<Map<String, String>> favoriteComics = [];
+  List<Map<String, String>> cartComics = [];
+
+  List<String> users = ["Чудо Женщина", "Джокер", "Киборг"];
+  List<IconData> icons = [Icons.book_outlined, Icons.book_outlined, Icons.book_outlined];
+
+  void addToFavorites(int index) {
+    setState(() {
+      favoriteComics.add(allComicsData[index]);
+    });
+  }
+
+  void addToCart(int index) {
+    setState(() {
+      cartComics.add(allComicsData[index]);
+    });
+  }
+
+  void navigateToFavorites() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => FavoritesPage(favoriteComics: favoriteComics)));
+  }
+
+  void navigateToCart() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage(cartComics: cartComics)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Комиксы')),
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 200,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: allComicsData.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ComicDetailPage(imagePath: allComicsData[index]['imagePath']!, description: allComicsData[index]['description']!)));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4.0),
+                    width: 130,
+                    child: Image.network(allComicsData[index]['imagePath']!, fit: BoxFit.cover),
+                  ),
+                );
+              },
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: allComicsData.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(allComicsData[index]['title']!),
+                  leading: Icon(icons[index]),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.favorite),
+                        onPressed: () {
+                          addToFavorites(index);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.shopping_cart),
+                        onPressed: () {
+                          addToCart(index);
+                        },
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ComicDetailPage(imagePath: allComicsData[index]['imagePath']!, description: allComicsData[index]['description']!)));
+                  },
+                );
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: navigateToFavorites,
+            child: Text('Избранное'),
+          ),
+          ElevatedButton(
+            onPressed: navigateToCart,
+            child: Text('Корзина'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FavoritesPage extends StatelessWidget {
+  final List<Map<String, String>> favoriteComics;
+
+  FavoritesPage({required this.favoriteComics});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Избранное'),
+      ),
+      body: ListView.builder(
+        itemCount: favoriteComics.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(favoriteComics[index]['title']!),
+            trailing: Icon(Icons.favorite),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class CartPage extends StatelessWidget {
+  final List<Map<String, String>> cartComics;
+
+  CartPage({required this.cartComics});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Корзина'),
+      ),
+      body: ListView.builder(
+        itemCount: cartComics.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(cartComics[index]['title']!),
+            trailing: Icon(Icons.shopping_cart),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class ComicDetailPage extends StatelessWidget {
+  final String imagePath;
+  final String description;
+
+  ComicDetailPage({required this.imagePath, required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Подробности комикса')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 200.0, // Установите высоту вашего изображения
+            child: PageView(
+              children: [
+                Image.network(imagePath, width: 120),
+                Image.network(
+                    'https://i.pinimg.com/736x/e1/32/c7/e132c7fa631ff414bcc39953164d2394.jpg',
+                    width: 300),
+                // Добавьте дополнительные Image.network с другими изображениями здесь, если нужно
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              description,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
